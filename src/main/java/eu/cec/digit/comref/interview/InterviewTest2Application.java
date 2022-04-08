@@ -1,11 +1,16 @@
 package eu.cec.digit.comref.interview;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import eu.cec.digit.comref.interview.persistent.domain.InternetServiceProvider;
 import eu.cec.digit.comref.interview.persistent.domain.Town;
@@ -16,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootApplication
 public class InterviewTest2Application implements CommandLineRunner {
+	
+	private final static Logger log = LoggerFactory.getLogger(InterviewTest2Application.class);
 
 	@Autowired
 	private TownRepository townRepository;
@@ -60,13 +67,13 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	public Town getTown(String name) {
 
-		return townRepository.findById(Integer.getInteger(name)).orElse(null);
+		return townRepository.findById(name).orElse(null);
 
 	}
 
 	public void deleteTown(String name) {
 
-		townRepository.deleteById(Integer.getInteger(name));
+		townRepository.deleteById(name);
 
 	}
 
@@ -111,12 +118,12 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	public List<InternetServiceProvider> getInternetServiceProviders() {
 
-		return internetServiceProviderRepository.findAll();
+		return internetServiceProviderRepository.findAll(Sort.by(Direction.ASC, "name"));
 	}
 
 	public List<InternetServiceProvider> getAvailableInternetServiceProviders() {
 		
-		return internetServiceProviderRepository.findAll();
+		return internetServiceProviderRepository.findAll().stream().filter(InternetServiceProvider::getAvailable).collect(Collectors.toList());
 	}
 
 }
