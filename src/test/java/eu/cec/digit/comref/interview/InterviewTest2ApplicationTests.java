@@ -126,8 +126,8 @@ class InterviewTest2ApplicationTests {
 		Town town = interviewTest2Application.getTown("Luxembourg");
 
 		assertNotNull(town);
-		assertTrue(town.getInternetServiceProviders().stream().filter(isp -> isp.getName().equals("post"))
-				.allMatch(isp -> isp.getName().equals("post")));
+		assertTrue(town.getInternetServiceProviders().stream().filter(isp -> isp.getName().equals("eltrona"))
+				.allMatch(isp -> isp.getName().equals("eltrona")));
 		assertTrue(town.getInternetServiceProviders().size() == 3);
 
 	}

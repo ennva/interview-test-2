@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,6 +39,9 @@ public class InternetServiceProvider implements Serializable {
 	)
 	@Column(name = "speeds")
 	private Set<Speed1> speeds = new HashSet<Speed1>();
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Town town;
 
 	@Column(name = "AVAILABLE")
 	private Boolean available;
@@ -64,6 +68,14 @@ public class InternetServiceProvider implements Serializable {
 
 	public void setAvailable(Boolean available) {
 		this.available = available;
+	}
+
+	public Town getTown() {
+		return town;
+	}
+
+	public void setTown(Town town) {
+		this.town = town;
 	}
 	
 }
