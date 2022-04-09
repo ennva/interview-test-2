@@ -1,10 +1,13 @@
 package eu.cec.digit.comref.interview.persistent.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -28,9 +31,13 @@ public class InternetServiceProvider implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "fk_isp_speeds")
-	private Set<Speed> speeds;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(
+			name = "isp_speeds",
+			joinColumns = @JoinColumn(name = "isp_name_speeds")
+	)
+	@Column(name = "speeds")
+	private Set<Speed1> speeds = new HashSet<Speed1>();
 
 	@Column(name = "AVAILABLE")
 	private Boolean available;
@@ -43,11 +50,11 @@ public class InternetServiceProvider implements Serializable {
 		this.name = name;
 	}
 
-	public Set<Speed> getSpeeds() {
+	public Set<Speed1> getSpeeds() {
 		return speeds;
 	}
 
-	public void setSpeeds(Set<Speed> speeds) {
+	public void setSpeeds(Set<Speed1> speeds) {
 		this.speeds = speeds;
 	}
 

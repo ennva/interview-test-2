@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.cec.digit.comref.interview.persistent.domain.InternetServiceProvider;
+import eu.cec.digit.comref.interview.persistent.domain.Speed1;
 import eu.cec.digit.comref.interview.persistent.domain.Town;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,15 +45,29 @@ class InterviewTest2ApplicationTests {
 
 	@Test
 	public void testBasicInternetServiceProviderCrud() {
+		
+		Set<Speed1> speeds1 = new HashSet<>();
+		speeds1.add(new Speed1("post", 1000));
+		speeds1.add(new Speed1("post", 10000));
+		
+		Set<Speed1> speeds2 = new HashSet<>();
+		speeds2.add(new Speed1("eltrona", 100));
+		speeds2.add(new Speed1("eltrona", 1000));
+		
+		Set<Speed1> speeds3 = new HashSet<>();
+		speeds3.add(new Speed1("luxonline", 10));
+		speeds3.add(new Speed1("luxonline", 100));
 
-		interviewTest2Application.addInternetServiceProvider("post", 1000, true);
-		interviewTest2Application.addInternetServiceProvider("eltrona", 100, false);
-		interviewTest2Application.addInternetServiceProvider("luxonline", 10, true);
+		interviewTest2Application.addInternetServiceProvider("post", speeds1, true);
+		interviewTest2Application.addInternetServiceProvider("eltrona", speeds2, false);
+		interviewTest2Application.addInternetServiceProvider("luxonline", speeds3, true);
 
 		InternetServiceProvider internetServiceProvider = interviewTest2Application.getInternetServiceProvider("post");
 		assertNotNull(internetServiceProvider);
 		assertTrue(internetServiceProvider.getName().equals("post"));
 		assertTrue(internetServiceProvider.getSpeeds().stream().anyMatch(s -> s.getSpeed().equals(1000)));
+		assertTrue(internetServiceProvider.getSpeeds().stream().filter(s -> s.getSpeed() == 1000).allMatch(s -> s.getSpeed().equals(1000)) );
+		assertTrue(internetServiceProvider.getSpeeds().size() == 2);
 		assertTrue(internetServiceProvider.getAvailable());
 
 		internetServiceProvider = interviewTest2Application.getInternetServiceProvider("eltrona");

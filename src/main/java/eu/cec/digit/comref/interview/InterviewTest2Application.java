@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort.Direction;
 
 import eu.cec.digit.comref.interview.persistent.domain.InternetServiceProvider;
 import eu.cec.digit.comref.interview.persistent.domain.Speed;
+import eu.cec.digit.comref.interview.persistent.domain.Speed1;
 import eu.cec.digit.comref.interview.persistent.domain.Town;
 import eu.cec.digit.comref.interview.persistent.repository.InternetServiceProviderRepository;
 import eu.cec.digit.comref.interview.persistent.repository.TownRepository;
@@ -90,15 +91,11 @@ public class InterviewTest2Application implements CommandLineRunner {
 	 * ISP
 	 */
 
-	public InternetServiceProvider addInternetServiceProvider(String name, Integer speed, Boolean available) {
-		Speed speed1 = getSpeedEntity(name, speed);
-		Set<Speed> speeds = new HashSet<>();
-		speeds.add(speed1);
+	public InternetServiceProvider addInternetServiceProvider(String name, Set<Speed1> speeds, Boolean available) {
 
 		InternetServiceProvider internetServiceProvider = new InternetServiceProvider();
 		internetServiceProvider.setAvailable(available);
 		internetServiceProvider.setName(name);
-		//internetServiceProvider.getSpeeds().add(speed1);
 		internetServiceProvider.setSpeeds(speeds);
 
 		return internetServiceProviderRepository.save(internetServiceProvider);
@@ -110,7 +107,7 @@ public class InterviewTest2Application implements CommandLineRunner {
 	}
 
 	public InternetServiceProvider updateInternetServiceProvider(String name, Integer speed, Boolean available) {
-		Speed speed1 = getSpeedEntity(name, speed);
+		Speed1 speed1 = getSpeedEntity(name, speed);
 		
 		InternetServiceProvider internetServiceProvider = getInternetServiceProvider(name);
 		internetServiceProvider.setAvailable(available);
@@ -134,8 +131,8 @@ public class InterviewTest2Application implements CommandLineRunner {
 		return internetServiceProviderRepository.findAll().stream().filter(InternetServiceProvider::getAvailable).collect(Collectors.toList());
 	}
 	
-	private Speed getSpeedEntity(String name, Integer speed) {
-		Speed speedObj = new Speed();
+	private Speed1 getSpeedEntity(String name, Integer speed) {
+		Speed1 speedObj = new Speed1();
 		speedObj.setIspName(name);
 		speedObj.setSpeed(speed);
 		
