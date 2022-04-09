@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -82,8 +85,13 @@ public class InterviewTest2Application implements CommandLineRunner {
 	}
 
 	public List<Town> getTowns() {
+		
+		Pageable paging = PageRequest.of(0, 10);
+		Page<Town> page = townRepository.findAll(paging);
 
-		return townRepository.findAll();
+		//return townRepository.findAll();
+		
+		return page.getContent();
 
 	}
 
@@ -123,7 +131,15 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	public List<InternetServiceProvider> getInternetServiceProviders() {
 
-		return internetServiceProviderRepository.findAll(Sort.by(Direction.ASC, "name"));
+		Pageable paging = PageRequest.of(0, 10, Sort.by("name").ascending());
+		Page<InternetServiceProvider> page = internetServiceProviderRepository.findAll(paging);
+		log.info("SIZE With page " + page.getContent().size());
+
+//		List<InternetServiceProvider> isps = internetServiceProviderRepository.findAll(Sort.by(Direction.ASC, "name"));
+//		log.info("SIZE " + isps.size());
+//		return isps;
+		
+		return page.getContent();
 	}
 
 	public List<InternetServiceProvider> getAvailableInternetServiceProviders() {
