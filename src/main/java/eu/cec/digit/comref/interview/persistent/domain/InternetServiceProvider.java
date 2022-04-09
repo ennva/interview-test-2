@@ -30,8 +30,8 @@ public class InternetServiceProvider implements Serializable {
 	@Column(name = "AVAILABLE")
 	private Boolean available;
 	
-	@OneToOne(mappedBy = "internetServiceProvider")
-	private Town town;
+//	@OneToOne(mappedBy = "internetServiceProvider")
+//	private Town town;
 
 	public String getName() {
 		return name;

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,7 +30,11 @@ public class Town implements Serializable {
 	private Integer inhabitants;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_isp_name")
+	@JoinTable(
+			name = "town_isp",
+			joinColumns = { @JoinColumn(name = "town_name") },
+			inverseJoinColumns = { @JoinColumn(name = "isp_name")}
+	)
 	private InternetServiceProvider internetServiceProvider;
 
 	public String getName() {
