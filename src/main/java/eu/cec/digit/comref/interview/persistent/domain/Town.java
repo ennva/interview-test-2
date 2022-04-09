@@ -2,6 +2,7 @@ package eu.cec.digit.comref.interview.persistent.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,8 +28,7 @@ public class Town implements Serializable {
 	@Column(name = "INHABITANTS")
 	private Integer inhabitants;
 
-	@OneToOne
-	@JoinColumn(name = "ISP_NAME", referencedColumnName = "NAME")
+	@OneToOne(cascade = CascadeType.ALL)
 	private InternetServiceProvider internetServiceProvider;
 
 	public String getName() {
