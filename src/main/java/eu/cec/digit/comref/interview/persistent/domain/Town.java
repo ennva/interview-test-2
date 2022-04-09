@@ -1,13 +1,17 @@
 package eu.cec.digit.comref.interview.persistent.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,8 +33,9 @@ public class Town implements Serializable {
 	@Column(name = "INHABITANTS")
 	private Integer inhabitants;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private InternetServiceProvider internetServiceProvider;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "town_isp")
+	private Set<InternetServiceProvider> internetServiceProviders = new HashSet<>();
 
 	public String getName() {
 		return name;
@@ -48,12 +53,12 @@ public class Town implements Serializable {
 		this.inhabitants = inhabitants;
 	}
 
-	public InternetServiceProvider getInternetServiceProvider() {
-		return internetServiceProvider;
+	public Set<InternetServiceProvider> getInternetServiceProviders() {
+		return internetServiceProviders;
 	}
 
-	public void setInternetServiceProvider(InternetServiceProvider internetServiceProvider) {
-		this.internetServiceProvider = internetServiceProvider;
+	public void setInternetServiceProviders(Set<InternetServiceProvider> internetServiceProviders) {
+		this.internetServiceProviders = internetServiceProviders;
 	}
 
 }

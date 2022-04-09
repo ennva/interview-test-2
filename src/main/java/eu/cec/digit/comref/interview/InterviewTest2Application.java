@@ -48,22 +48,22 @@ public class InterviewTest2Application implements CommandLineRunner {
 	 * TOWN
 	 */
 
-	public Town addTown(String name, Integer inhabitants, InternetServiceProvider internetServiceProvider) {
+	public Town addTown(String name, Integer inhabitants, Set<InternetServiceProvider> internetServiceProviders) {
 
 		Town town = new Town();
 		town.setName(name);
 		town.setInhabitants(inhabitants);
-		town.setInternetServiceProvider(internetServiceProvider);
+		town.setInternetServiceProviders(internetServiceProviders);
 
 		return townRepository.save(town);
 
 	}
 
-	public Town updateTown(String name, Integer inhabitants, InternetServiceProvider internetServiceProvider) {
+	public Town updateTown(String name, Integer inhabitants, Set<InternetServiceProvider> internetServiceProviders) {
 
 		Town town = getTown(name);
 		town.setInhabitants(inhabitants);
-		town.setInternetServiceProvider(internetServiceProvider);
+		town.setInternetServiceProviders(internetServiceProviders);
 
 		return townRepository.save(town);
 

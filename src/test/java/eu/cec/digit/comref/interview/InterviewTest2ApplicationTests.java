@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 class InterviewTest2ApplicationTests {
-	
+
 	private final static Logger log = LoggerFactory.getLogger(InterviewTest2ApplicationTests.class);
 
 	@Autowired
@@ -45,15 +45,15 @@ class InterviewTest2ApplicationTests {
 
 	@Test
 	public void testBasicInternetServiceProviderCrud() {
-		
+
 		Set<Speed1> speeds1 = new HashSet<>();
 		speeds1.add(new Speed1("post", 1000));
 		speeds1.add(new Speed1("post", 10000));
-		
+
 		Set<Speed1> speeds2 = new HashSet<>();
 		speeds2.add(new Speed1("eltrona", 100));
 		speeds2.add(new Speed1("eltrona", 1000));
-		
+
 		Set<Speed1> speeds3 = new HashSet<>();
 		speeds3.add(new Speed1("luxonline", 10));
 		speeds3.add(new Speed1("luxonline", 100));
@@ -66,7 +66,8 @@ class InterviewTest2ApplicationTests {
 		assertNotNull(internetServiceProvider);
 		assertTrue(internetServiceProvider.getName().equals("post"));
 		assertTrue(internetServiceProvider.getSpeeds().stream().anyMatch(s -> s.getSpeed().equals(1000)));
-		assertTrue(internetServiceProvider.getSpeeds().stream().filter(s -> s.getSpeed() == 1000).allMatch(s -> s.getSpeed().equals(1000)) );
+		assertTrue(internetServiceProvider.getSpeeds().stream().filter(s -> s.getSpeed() == 1000)
+				.allMatch(s -> s.getSpeed().equals(1000)));
 		assertTrue(internetServiceProvider.getSpeeds().size() == 2);
 		assertTrue(internetServiceProvider.getAvailable());
 
@@ -112,13 +113,22 @@ class InterviewTest2ApplicationTests {
 
 		testBasicInternetServiceProviderCrud();
 
-		InternetServiceProvider internetServiceProvider = interviewTest2Application.getInternetServiceProvider("post");
-		interviewTest2Application.addTown("Luxembourg", 114303, internetServiceProvider);
+		InternetServiceProvider post = interviewTest2Application.getInternetServiceProvider("post");
+		InternetServiceProvider eltrona = interviewTest2Application.getInternetServiceProvider("eltrona");
+		InternetServiceProvider luxonline = interviewTest2Application.getInternetServiceProvider("luxonline");
+		Set<InternetServiceProvider> isps = new HashSet<>();
+		isps.add(post);
+		isps.add(eltrona);
+		isps.add(luxonline);
+
+		interviewTest2Application.addTown("Luxembourg", 114303, isps);
 
 		Town town = interviewTest2Application.getTown("Luxembourg");
 
 		assertNotNull(town);
-		assertTrue(town.getInternetServiceProvider().getName().equals("post"));
+		assertTrue(town.getInternetServiceProviders().stream().filter(isp -> isp.getName().equals("post"))
+				.allMatch(isp -> isp.getName().equals("post")));
+		assertTrue(town.getInternetServiceProviders().size() == 3);
 
 	}
 
