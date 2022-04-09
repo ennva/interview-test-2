@@ -50,19 +50,19 @@ class InterviewTest2ApplicationTests {
 		InternetServiceProvider internetServiceProvider = interviewTest2Application.getInternetServiceProvider("post");
 		assertNotNull(internetServiceProvider);
 		assertTrue(internetServiceProvider.getName().equals("post"));
-		assertTrue(internetServiceProvider.getSpeed().equals(1000));
+		assertTrue(internetServiceProvider.getSpeeds().stream().anyMatch(s -> s.getSpeed().equals(1000)));
 		assertTrue(internetServiceProvider.getAvailable());
 
 		internetServiceProvider = interviewTest2Application.getInternetServiceProvider("eltrona");
 		assertNotNull(internetServiceProvider);
 		assertTrue(internetServiceProvider.getName().equals("eltrona"));
-		assertTrue(internetServiceProvider.getSpeed().equals(100));
+		assertTrue(internetServiceProvider.getSpeeds().stream().anyMatch(s -> s.getSpeed().equals(100)));
 		assertFalse(internetServiceProvider.getAvailable());
 
 		internetServiceProvider = interviewTest2Application.getInternetServiceProvider("luxonline");
 		assertNotNull(internetServiceProvider);
 		assertTrue(internetServiceProvider.getName().equals("luxonline"));
-		assertTrue(internetServiceProvider.getSpeed().equals(10));
+		assertTrue(internetServiceProvider.getSpeeds().stream().anyMatch(s -> s.getSpeed().equals(10)));
 		assertTrue(internetServiceProvider.getAvailable());
 	}
 

@@ -30,11 +30,6 @@ public class Town implements Serializable {
 	private Integer inhabitants;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "town_isp",
-			joinColumns = { @JoinColumn(name = "town_name") },
-			inverseJoinColumns = { @JoinColumn(name = "isp_name")}
-	)
 	private InternetServiceProvider internetServiceProvider;
 
 	public String getName() {
