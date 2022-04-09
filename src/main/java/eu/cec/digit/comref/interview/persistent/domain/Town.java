@@ -29,6 +29,7 @@ public class Town implements Serializable {
 	private Integer inhabitants;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_isp_name")
 	private InternetServiceProvider internetServiceProvider;
 
 	public String getName() {
