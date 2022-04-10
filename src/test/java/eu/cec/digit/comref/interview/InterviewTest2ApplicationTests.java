@@ -156,9 +156,12 @@ class InterviewTest2ApplicationTests {
 		assertTrue(town.getTechnicians().size() == 3);
 		assertTrue(town.getTechnicians().stream().filter(t -> t.getName().equalsIgnoreCase("bob")).allMatch(t -> t.getName().equalsIgnoreCase("bob")));
 		assertTrue(town.getTechnicians().stream().anyMatch(t -> t.getName().equalsIgnoreCase("neph")));
-		
 		assertTrue(ferrara.getTechnicians().size() == 2);
-			
+		
+		neph.getTowns().add(ferrara);
+		neph.getTowns().add(town);
+		assertTrue(neph.getTowns().contains(ferrara));	
+		assertTrue(neph.getTowns().size() == 2);
 	}
 
 	@Test

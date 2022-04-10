@@ -13,4 +13,5 @@ both tasks will break the unit tests, so fix them accordingly
 - InternetServiceProvider should be able to have multiple internet speeds, ie : 10, 100, 1000
 - Towns should be able to have multiple internet service providers
 - Add Pagination to the getInternetServiceProviders and getTowns
+- Towns should be able to have multiple technicians and technicians should be registered in multiple towns
 
