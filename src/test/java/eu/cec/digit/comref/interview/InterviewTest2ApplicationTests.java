@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.cec.digit.comref.interview.persistent.domain.InternetServiceProvider;
 import eu.cec.digit.comref.interview.persistent.domain.Speed1;
+import eu.cec.digit.comref.interview.persistent.domain.Technician;
 import eu.cec.digit.comref.interview.persistent.domain.Town;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,9 +39,11 @@ class InterviewTest2ApplicationTests {
 		interviewTest2Application.getTowns().stream().forEach(t -> interviewTest2Application.deleteTown(t.getName()));
 		interviewTest2Application.getInternetServiceProviders().stream()
 				.forEach(t -> interviewTest2Application.deleteInternetServiceProvider(t.getName()));
+		interviewTest2Application.getTechnicians().stream().forEach(tech -> interviewTest2Application.deleteTechnician(tech.getName()));
 
 		assertTrue(interviewTest2Application.getTowns().isEmpty());
 		assertTrue(interviewTest2Application.getInternetServiceProviders().isEmpty());
+		assertTrue(interviewTest2Application.getTechnicians().isEmpty());
 
 	}
 
@@ -106,6 +110,55 @@ class InterviewTest2ApplicationTests {
 		assertTrue(town.getName().equals("Dudelange"));
 		assertTrue(town.getInhabitants().equals(18013));
 
+	}
+	
+	@Test
+	public void testBasicTechnicianCrud() {
+
+		interviewTest2Application.addTechnician("Bob", "wirer");
+		interviewTest2Application.addTechnician("Dylan", "liner");
+
+		Technician technician = interviewTest2Application.getTechnician("Bob");
+		assertNotNull(technician);
+		assertTrue(technician.getName().equals("Bob"));
+		assertTrue(technician.getSkill().equals("wirer"));
+
+		technician = interviewTest2Application.getTechnician("Dylan");
+		assertNotNull(technician);
+		assertTrue(technician.getName().equals("Dylan"));
+		assertTrue(technician.getSkill().equals("liner"));
+
+	}
+	
+	@Test
+	public void testTownTechnicianRelation() {
+		testBasicTechnicianCrud();
+		
+		Technician bob = interviewTest2Application.getTechnician("Bob");
+		Technician dylan = interviewTest2Application.getTechnician("Dylan");
+		
+		Technician neph = interviewTest2Application.addTechnician("neph", "tuttofare");
+		
+		interviewTest2Application.addTown("Luxembourg", 12000, new HashSet<InternetServiceProvider>(), new ArrayList<Technician>());
+		interviewTest2Application.addTown("Ferrara", 22000, new HashSet<InternetServiceProvider>(), new ArrayList<Technician>());
+		
+		Town town = interviewTest2Application.getTown("Luxembourg");
+		town.getTechnicians().add(bob);
+		town.getTechnicians().add(dylan);
+		town.getTechnicians().add(neph);
+		
+		Town ferrara = interviewTest2Application.getTown("Ferrara");
+		ferrara.getTechnicians().add(neph);
+		ferrara.getTechnicians().add(bob);
+		
+		
+		assertNotNull(town);
+		assertTrue(town.getTechnicians().size() == 3);
+		assertTrue(town.getTechnicians().stream().filter(t -> t.getName().equalsIgnoreCase("bob")).allMatch(t -> t.getName().equalsIgnoreCase("bob")));
+		assertTrue(town.getTechnicians().stream().anyMatch(t -> t.getName().equalsIgnoreCase("neph")));
+		
+		assertTrue(ferrara.getTechnicians().size() == 2);
+			
 	}
 
 	@Test

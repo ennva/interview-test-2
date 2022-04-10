@@ -20,15 +20,17 @@ import org.springframework.data.domain.Sort.Direction;
 import eu.cec.digit.comref.interview.persistent.domain.InternetServiceProvider;
 import eu.cec.digit.comref.interview.persistent.domain.Speed;
 import eu.cec.digit.comref.interview.persistent.domain.Speed1;
+import eu.cec.digit.comref.interview.persistent.domain.Technician;
 import eu.cec.digit.comref.interview.persistent.domain.Town;
 import eu.cec.digit.comref.interview.persistent.repository.InternetServiceProviderRepository;
+import eu.cec.digit.comref.interview.persistent.repository.TechnicianRepository;
 import eu.cec.digit.comref.interview.persistent.repository.TownRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
 public class InterviewTest2Application implements CommandLineRunner {
-	
+
 	private final static Logger log = LoggerFactory.getLogger(InterviewTest2Application.class);
 
 	@Autowired
@@ -36,6 +38,9 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	@Autowired
 	private InternetServiceProviderRepository internetServiceProviderRepository;
+
+	@Autowired
+	private TechnicianRepository technicianRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(InterviewTest2Application.class, args);
@@ -57,6 +62,19 @@ public class InterviewTest2Application implements CommandLineRunner {
 		town.setName(name);
 		town.setInhabitants(inhabitants);
 		town.setInternetServiceProviders(internetServiceProviders);
+
+		return townRepository.save(town);
+
+	}
+
+	public Town addTown(String name, Integer inhabitants, Set<InternetServiceProvider> internetServiceProviders,
+			List<Technician> technicians) {
+
+		Town town = new Town();
+		town.setName(name);
+		town.setInhabitants(inhabitants);
+		town.setInternetServiceProviders(internetServiceProviders);
+		town.setTechnicians(technicians);
 
 		return townRepository.save(town);
 
@@ -84,13 +102,19 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	}
 
+	public void deleteTechnician(String name) {
+
+		technicianRepository.deleteById(name);
+
+	}
+
 	public List<Town> getTowns() {
-		
+
 		Pageable paging = PageRequest.of(0, 10);
 		Page<Town> page = townRepository.findAll(paging);
 
-		//return townRepository.findAll();
-		
+		// return townRepository.findAll();
+
 		return page.getContent();
 
 	}
@@ -116,7 +140,7 @@ public class InterviewTest2Application implements CommandLineRunner {
 
 	public InternetServiceProvider updateInternetServiceProvider(String name, Integer speed, Boolean available) {
 		Speed1 speed1 = getSpeedEntity(name, speed);
-		
+
 		InternetServiceProvider internetServiceProvider = getInternetServiceProvider(name);
 		internetServiceProvider.setAvailable(available);
 		internetServiceProvider.setName(name);
@@ -138,21 +162,50 @@ public class InterviewTest2Application implements CommandLineRunner {
 //		List<InternetServiceProvider> isps = internetServiceProviderRepository.findAll(Sort.by(Direction.ASC, "name"));
 //		log.info("SIZE " + isps.size());
 //		return isps;
-		
+
 		return page.getContent();
 	}
 
 	public List<InternetServiceProvider> getAvailableInternetServiceProviders() {
-		
-		return internetServiceProviderRepository.findAll().stream().filter(InternetServiceProvider::getAvailable).collect(Collectors.toList());
+
+		return internetServiceProviderRepository.findAll().stream().filter(InternetServiceProvider::getAvailable)
+				.collect(Collectors.toList());
 	}
-	
+
 	private Speed1 getSpeedEntity(String name, Integer speed) {
 		Speed1 speedObj = new Speed1();
 		speedObj.setIspName(name);
 		speedObj.setSpeed(speed);
-		
+
 		return speedObj;
+	}
+
+	/*
+	 * TECHNICIAN
+	 */
+	public Technician addTechnician(String name, String skill) {
+		Technician technician = new Technician();
+		technician.setName(name);
+		technician.setSkill(skill);
+
+		return technicianRepository.save(technician);
+	}
+
+	public Technician updateTechnician(String name, String skill) {
+		Technician technician = getTechnician(name);
+		technician.setName(name);
+		technician.setSkill(skill);
+
+		return technicianRepository.save(technician);
+	}
+
+	public Technician getTechnician(String name) {
+
+		return technicianRepository.findById(name).orElse(null);
+	}
+
+	public List<Technician> getTechnicians() {
+		return technicianRepository.findAll();
 	}
 
 }

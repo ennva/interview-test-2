@@ -31,6 +31,9 @@ public class InternetServiceProvider implements Serializable {
 	@Id
 	@Column(name = "NAME")
 	private String name;
+	
+	@Column(name = "AVAILABLE")
+	private Boolean available;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(
@@ -42,9 +45,6 @@ public class InternetServiceProvider implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Town town;
-
-	@Column(name = "AVAILABLE")
-	private Boolean available;
 
 	public String getName() {
 		return name;

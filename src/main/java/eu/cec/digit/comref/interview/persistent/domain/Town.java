@@ -1,7 +1,9 @@
 package eu.cec.digit.comref.interview.persistent.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,7 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,6 +40,14 @@ public class Town implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "town_isp")
 	private Set<InternetServiceProvider> internetServiceProviders = new HashSet<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "town_techs",
+			joinColumns = { @JoinColumn(name = "town_fk") },
+			inverseJoinColumns = { @JoinColumn(name = "tech_fk") }
+	)
+	private List<Technician> technicians = new ArrayList<>();
 
 	public String getName() {
 		return name;
@@ -59,6 +71,14 @@ public class Town implements Serializable {
 
 	public void setInternetServiceProviders(Set<InternetServiceProvider> internetServiceProviders) {
 		this.internetServiceProviders = internetServiceProviders;
+	}
+
+	public List<Technician> getTechnicians() {
+		return technicians;
+	}
+
+	public void setTechnicians(List<Technician> technicians) {
+		this.technicians = technicians;
 	}
 
 }
