@@ -20,22 +20,5 @@ public class Speed {
 	
 	@Column(name = "speed")
 	private Integer speed;
-
-	public String getIspName() {
-		return ispName;
-	}
-
-	public void setIspName(String ispName) {
-		this.ispName = ispName;
-	}
-
-	public Integer getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(Integer speed) {
-		this.speed = speed;
-	}
-	
 	
 }

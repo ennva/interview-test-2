@@ -29,30 +29,4 @@ public class Technician {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "technicians")
 	private List<Town> towns = new ArrayList<>();
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSkill() {
-		return skill;
-	}
-
-	public void setSkill(String skill) {
-		this.skill = skill;
-	}
-
-	public List<Town> getTowns() {
-		return towns;
-	}
-
-	public void setTowns(List<Town> towns) {
-		this.towns = towns;
-	}
-	
-	
-
 }

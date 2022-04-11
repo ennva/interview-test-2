@@ -49,36 +49,4 @@ public class Town implements Serializable {
 	)
 	private List<Technician> technicians = new ArrayList<>();
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Integer getInhabitants() {
-		return inhabitants;
-	}
-
-	public void setInhabitants(Integer inhabitants) {
-		this.inhabitants = inhabitants;
-	}
-
-	public Set<InternetServiceProvider> getInternetServiceProviders() {
-		return internetServiceProviders;
-	}
-
-	public void setInternetServiceProviders(Set<InternetServiceProvider> internetServiceProviders) {
-		this.internetServiceProviders = internetServiceProviders;
-	}
-
-	public List<Technician> getTechnicians() {
-		return technicians;
-	}
-
-	public void setTechnicians(List<Technician> technicians) {
-		this.technicians = technicians;
-	}
-
 }
